@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Master - Professional Quiz Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="quiz.css">
+</head>
+<body>
+    <!-- Difficulty Selection Screen -->
+    <div id="difficultyScreen" class="screen active">
+        <div class="container">
+            <div class="header-section">
+                <div class="logo">
+                    <div class="logo-icon">🎓</div>
+                    <h1>Quiz Master</h1>
+                </div>
+                <p class="tagline">Test Your Knowledge, Challenge Your Mind</p>
+            </div>
+            
+            <div class="selection-container">
+                <h2 class="selection-title">Select Difficulty Level</h2>
+                <div class="difficulty-grid">
+                    <button class="card" onclick="selectDifficulty('easy')">
+                        <div class="card-icon">😊</div>
+                        <h3>Easy</h3>
+                        <p>Perfect for beginners</p>
+                    </button>
+                    <button class="card" onclick="selectDifficulty('medium')">
+                        <div class="card-icon">📈</div>
+                        <h3>Medium</h3>
+                        <p>For intermediate learners</p>
+                    </button>
+                    <button class="card" onclick="selectDifficulty('hard')">
+                        <div class="card-icon">🔥</div>
+                        <h3>Hard</h3>
+                        <p>Challenge your expertise</p>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Category Selection Screen -->
+    <div id="categoryScreen" class="screen">
+        <div class="container">
+            <div class="header-section">
+                <div class="logo">
+                    <div class="logo-icon">🎓</div>
+                    <h1>Quiz Master</h1>
+                </div>
+                <p class="breadcrumb">
+                    Difficulty: <span id="selectedDifficulty" class="highlight">Easy</span>
+                </p>
+            </div>
+            
+            <div class="selection-container">
+                <h2 class="selection-title">Choose Your Category</h2>
+                <div class="category-grid" id="categoryGrid"></div>
+                <button class="back-btn" onclick="goBack('difficulty')">
+                    <i class="fas fa-arrow-left"></i> Back to Difficulty
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quiz Screen -->
+    <div id="quizScreen" class="screen">
+        <div class="quiz-wrapper">
+            <div class="quiz-header">
+                <div class="logo-small">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Quiz Master</span>
+                </div>
+                <div class="progress-container">
+                    <span class="progress-text">Question <span id="currentQuestion">1</span> of <span id="totalQuestions">20</span></span>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar-fill" id="progressFill"></div>
+                    </div>
+                </div>
+                <div class="timer-display" id="timerDisplay">
+                    <i class="fas fa-clock"></i>
+                    <span id="timeLeft">15</span>
+                </div>
+            </div>
+
+            <div class="quiz-content">
+                <div class="main-content">
+                    <div class="question-card">
+                        <div class="question-number">Question <span id="questionNum">1</span></div>
+                        <h2 class="question-text" id="questionText">Loading question...</h2>
+                    </div>
+
+                    <div class="options-container" id="optionsContainer"></div>
+                </div>
+
+                <aside class="sidebar">
+                    <div class="sidebar-card">
+                        <div class="sidebar-header">
+                            <i class="fas fa-bolt"></i>
+                            <h3>Lifelines</h3>
+                        </div>
+                        <div class="lifeline-buttons">
+                            <button class="lifeline-btn fifty" id="fiftyFiftyBtn" onclick="useFiftyFifty()">
+                                <div class="lifeline-icon">
+                                    <i class="fas fa-divide"></i>
+                                </div>
+                                <div class="lifeline-info">
+                                    <span class="lifeline-name">50:50</span>
+                                    <span class="lifeline-desc">Remove 2 wrong answers</span>
+                                </div>
+                            </button>
+                            
+                            <button class="lifeline-btn poll" id="audiencePollBtn" onclick="useAudiencePoll()">
+                                <div class="lifeline-icon">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <div class="lifeline-info">
+                                    <span class="lifeline-name">Audience Poll</span>
+                                    <span class="lifeline-desc">See audience votes</span>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-card score-card">
+                        <div class="sidebar-header">
+                            <i class="fas fa-star"></i>
+                            <h3>Score</h3>
+                        </div>
+                        <div class="score-info">
+                            <div class="score-value">
+                                <span id="currentScore">0</span>/<span id="attemptedQuestions">0</span>
+                            </div>
+                            <div class="score-label">Correct Answers</div>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </div>
+
+    <!-- Result Screen -->
+    <div id="resultScreen" class="screen">
+        <div class="container">
+            <div class="result-container">
+                <div class="result-header">
+                    <div class="result-icon" id="resultIcon">🏆</div>
+                    <h1 class="result-title">Quiz Completed!</h1>
+                    <p class="result-subtitle" id="resultMessage">Excellent Performance</p>
+                </div>
+
+                <div class="result-stats">
+                    <div class="stat-card primary">
+                        <div class="stat-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="finalScore">0/20</div>
+                            <div class="stat-label">Score</div>
+                        </div>
+                    </div>
+                    <div class="stat-card secondary">
+                        <div class="stat-icon">
+                            <i class="fas fa-percent"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="finalPercentage">0%</div>
+                            <div class="stat-label">Accuracy</div>
+                        </div>
+                    </div>
+                    <div class="stat-card tertiary">
+                        <div class="stat-icon">
+                            <i class="fas fa-award"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="resultGrade">A+</div>
+                            <div class="stat-label">Grade</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="results-details">
+                    <h3 class="details-title">Question Breakdown</h3>
+                    <div class="results-list" id="resultsBreakdown"></div>
+                </div>
+
+                <div class="result-actions">
+                    <button class="btn btn-primary" onclick="playAgain()">
+                        <i class="fas fa-redo"></i> Start New Quiz
+                    </button>
+                    <button class="btn btn-success" onclick="showAddQuestionModal()">
+                        <i class="fas fa-plus"></i> Add Question
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Question Modal -->
+    <div id="addQuestionModal" class="modal">
+        <div class="modal-content">
+            <h2 class="modal-header">Add New Question</h2>
+            <form id="addQuestionForm">
+                <div class="form-group">
+                    <label class="form-label">
+                        Category: <span style="color: #2563eb; text-transform: capitalize;" id="modalCategory"></span> | 
+                        Difficulty: <span style="color: #7c3aed; text-transform: capitalize;" id="modalDifficulty"></span>
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Question</label>
+                    <textarea id="questionInput" class="form-textarea" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Options</label>
+                    <div class="option-input-group">
+                        <div class="option-label">A</div>
+                        <input type="text" class="form-input" id="option0" required>
+                        <input type="radio" name="correct" value="0" checked>
+                    </div>
+                    <div class="option-input-group">
+                        <div class="option-label">B</div>
+                        <input type="text" class="form-input" id="option1" required>
+                        <input type="radio" name="correct" value="1">
+                    </div>
+                    <div class="option-input-group">
+                        <div class="option-label">C</div>
+                        <input type="text" class="form-input" id="option2" required>
+                        <input type="radio" name="correct" value="2">
+                    </div>
+                    <div class="option-input-group">
+                        <div class="option-label">D</div>
+                        <input type="text" class="form-input" id="option3" required>
+                        <input type="radio" name="correct" value="3">
+                    </div>
+                    <p class="form-hint">Select the radio button for the correct answer</p>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">Add Question</button>
+                    <button type="button" class="btn-secondary" onclick="closeAddQuestionModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="quiz.js"></script>
+</body>
+</html>
